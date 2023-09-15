@@ -1,0 +1,34 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+     - POSTGRES_PASSWORD=postgrespw
+     - POSTGRES_USER=postgres
+     - POSTGRES_DB=test
+    networks:
+     - development
+     
+  migrator:
+    build: ./src/backend/Migrator
+    depends_on:
+     - postgres
+    ports:
+     - "7070:80"
+    networks:
+     - development
+    
+  test_services:
+    build: ./src/backend/Services
+    depends_on:
+     - postgres
+    ports:
+     - "7071:80"
+    networks:
+     - development
+     
+networks:
+ development:
+  driver: bridge
+    
+    
